@@ -29,6 +29,9 @@ public class RegistroActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(RegistroActivityViewModel.class);
 
+
+        // Leer los datos del usuario desde el ViewModel
+        vm.leerDatos(getApplicationContext());
         //mostrar gatos
         // Observa los cambios en mUsuario
         vm.getMutableUsuario().observe(this, new Observer<Usuario>() {
@@ -44,29 +47,23 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
 
-        vm.leerDatos(getApplicationContext());
-
-
-        binding.btGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String apellido = binding.etApellido.getText().toString();
-                String mail = binding.etMail.getText().toString();
-                long dni;
-                try {
-                    dni = Long.parseLong(binding.etDni.getText().toString());
-                } catch (NumberFormatException e) {
-                    binding.etDni.setError("DNI inválido");
-                    return;
-                }
-                String password = binding.etClave.getText().toString();
-
-                // Llamar al ViewModel para guardar los datos
-                vm.guardarUsuario(getApplicationContext(), apellido, mail, dni, password);
-                Toast.makeText(getApplicationContext(), "Usuario guardado", Toast.LENGTH_SHORT).show();
-                finish(); // Cierra la actividad y regresa a la anterior
+        // Botón de Guardar
+        binding.btGuardar.setOnClickListener(v -> {
+            String apellido = binding.etApellido.getText().toString();
+            String mail = binding.etMail.getText().toString();
+            long dni;
+            try {
+                dni = Long.parseLong(binding.etDni.getText().toString());
+            } catch (NumberFormatException e) {
+                binding.etDni.setError("DNI inválido");
+                return;
             }
-        });
+            String password = binding.etClave.getText().toString();
 
+            // Guardar el usuario desde el ViewModel
+            vm.guardarUsuario(getApplicationContext(), apellido, mail, dni, password);
+            Toast.makeText(getApplicationContext(), "Usuario guardado", Toast.LENGTH_SHORT).show();
+            finish();
+        });
     }
 }

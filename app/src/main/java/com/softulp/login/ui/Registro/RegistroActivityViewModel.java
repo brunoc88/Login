@@ -16,36 +16,32 @@ import com.softulp.login.request.ApliClient;
 
 
 public class RegistroActivityViewModel extends AndroidViewModel {
-    private MutableLiveData<Usuario> mUsuario;
-
+    private MutableLiveData<Usuario> mUsuario = new MutableLiveData<>();
 
     public RegistroActivityViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public LiveData<Usuario>getMutableUsuario(){
-        if(mUsuario == null){
-            mUsuario = new MutableLiveData<>();
-        }
+    public LiveData<Usuario> getMutableUsuario() {
         return mUsuario;
     }
 
-
-    // Método para cargar datos del usuario y actualizar el LiveData
+    // Método para leer los datos del usuario
     public void leerDatos(Context context) {
         Usuario usuario = ApliClient.leer(context);
-        mUsuario.setValue(usuario); // Actualiza el LiveData con los datos leídos
+        mUsuario.setValue(usuario); // Establecer el usuario en LiveData
     }
+
 
     // Método para guardar el usuario
     public void guardarUsuario(Context context, String apellido, String mail, long dni, String password) {
         Usuario usuario = new Usuario(apellido, mail, dni, password);
-        mUsuario.setValue(usuario);
         ApliClient.guardar(context, usuario);
+        mUsuario.setValue(usuario); // Actualizar el LiveData con el nuevo usuario guardado
     }
-
-
-
-
-
 }
+
+
+
+
+

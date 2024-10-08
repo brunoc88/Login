@@ -29,33 +29,19 @@ public class MainActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        // Observamos el LiveData de loginSuccess
-        vm.getLoginSuccess().observe(this, success -> {
-            if (success) {
-                // Si el login fue exitoso, navegar a la segunda Activity
-                Intent intent = new Intent(MainActivity.this, RegistroActivity.class);
-                startActivity(intent);
-            } else {
-                // Mostrar un mensaje de error si el login falló
-                Toast.makeText(MainActivity.this, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show();
-            }
+
+        // Botón de Login
+        binding.btLogin.setOnClickListener(v -> {
+            String usuario = binding.etUsuario.getText().toString();
+            String password = binding.etPassword.getText().toString();
+            vm.login(MainActivity.this, usuario, password);
         });
 
-        binding.btLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String usuario = binding.etUsuario.getText().toString();
-                String password = binding.etPassword.getText().toString();
-                vm.login(MainActivity.this, usuario, password);  // Pasamos el contexto de la Activity
-            }
-        });
-
-        binding.btRegistrarse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegistroActivity.class);
-                startActivity(intent);
-            }
+        // Botón de Registrarse
+        binding.btRegistrarse.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RegistroActivity.class);
+            startActivity(intent);
         });
     }
 }
+
