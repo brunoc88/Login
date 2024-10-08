@@ -44,9 +44,8 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
 
-
-
         vm.leerDatos(getApplicationContext());
+        
 
         binding.btGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
